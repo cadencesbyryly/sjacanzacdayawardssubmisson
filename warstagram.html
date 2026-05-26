@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>warstagram</title>
+
+<style>
+html {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    overflow-x: hidden;
+    background: url('warstagrambackground.png') no-repeat center center fixed;
+    background-size: 100% 100%;
+    font-family: Arial, sans-serif;
+}
+
+/* EACH POST */
+.section {
+    height: 100vh;
+    width: 100vw;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+
+    position: relative;
+}
+
+/* POST BOX */
+.post-box {
+    height: 78vh;
+    aspect-ratio: 9 / 16;
+
+    border-radius: 18px;
+    overflow: hidden;
+
+    background: black;
+    z-index: 2;
+}
+
+.post-box video,
+.post-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* DECORATIONS */
+.floating {
+    position: fixed;
+    z-index: 5;
+}
+
+/* DECOR POSITIONS */
+.poppy {
+    width: 85px;
+    top: 40px;
+    left: 250px;
+}
+
+.badge {
+    width: 80px;
+    top: 90px;
+    right: 180px;
+}
+
+.cookies {
+    width: 110px;
+    bottom: 40px;
+    right: 200px;
+}
+
+/* SIDE ICONS */
+.side-icon {
+    width: 70px;
+    position: fixed;
+    right: 400px;
+    z-index: 5;
+    pointer-events: auto;
+    transition: transform 0.2s ease;
+}
+
+.like { top: 35%; }
+.comment { top: 48%; }
+.share { top: 65%; }
+
+.side-icon:hover {
+    transform: scale(1.4);
+}
+
+/* HOME ICON */
+.home-icon {
+    width: 100px;
+
+    position: fixed;
+    top: 30px;
+    left: 30px;
+
+    z-index: 20;
+    cursor: pointer;
+
+    transition: transform 0.2s ease;
+}
+
+.home-icon:hover {
+    transform: scale(1.15);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- DECORATIONS -->
+<img src="warstagrampoppy.png" class="floating poppy">
+<img src="warstagrambadge.png" class="floating badge">
+<img src="warstagramcookies.png" class="floating cookies">
+
+<!-- SIDE ICONS -->
+<img src="warstagramlike.png" class="floating side-icon no-rotate like">
+<img src="warstagramcomment.png" class="floating side-icon no-rotate comment">
+<img src="warstagramshare.png" class="floating side-icon no-rotate share">
+
+<!-- HOME ICON -->
+<a href="index.html">
+    <img class="home-icon" id="homeIcon" src="warstagramhome.png" alt="Home">
+</a>
+
+<!-- VIDEO 1 -->
+<section class="section">
+    <div class="post-box">
+        <video loop playsinline class="post-video">
+            <source src="warstagramvideo1.mp4">
+        </video>
+    </div>
+</section>
+
+<!-- PNG 1 -->
+<section class="section">
+    <div class="post-box">
+        <img src="warstagramphoto1.png">
+    </div>
+</section>
+
+<!-- VIDEO 2 -->
+<section class="section">
+    <div class="post-box">
+        <video loop playsinline class="post-video">
+            <source src="warstagramvideo2.mp4">
+        </video>
+    </div>
+</section>
+
+<!-- PNG 2 -->
+<section class="section">
+    <div class="post-box">
+        <img src="warstagramphoto2.png">
+    </div>
+</section>
+
+<!-- VIDEO 3 -->
+<section class="section">
+    <div class="post-box">
+        <video loop playsinline class="post-video">
+            <source src="warstagramvideo3.mp4">
+        </video>
+    </div>
+</section>
+
+<!-- PNG 3 -->
+<section class="section">
+    <div class="post-box">
+        <img src="warstagramphoto3.png">
+    </div>
+</section>
+
+<!-- VIDEO 4 -->
+<section class="section">
+    <div class="post-box">
+        <video loop playsinline class="post-video">
+            <source src="warstagramvideo4.mp4">
+        </video>
+    </div>
+</section>
+
+<!-- PNG 4 -->
+<section class="section" id="last-section">
+    <div class="post-box">
+        <img src="warstagramphoto4.png">
+    </div>
+</section>
+
+
+<script>
+const sections = document.querySelectorAll(".section");
+const videos = document.querySelectorAll(".post-video");
+const lastIndex = sections.length - 1;
+
+let isLooping = false;
+let audioUnlocked = false;
+
+/* SPINNING DECORATIONS */
+const decorations = document.querySelectorAll(".floating:not(.no-rotate)");
+
+/* FIRST CLICK ENABLES SOUND */
+document.addEventListener("click", () => {
+
+    audioUnlocked = true;
+
+    updateVideos();
+
+}, { once: true });
+
+function updateVideos() {
+
+    videos.forEach(video => {
+
+        const rect = video.getBoundingClientRect();
+
+        const visible =
+            rect.top < window.innerHeight * 0.7 &&
+            rect.bottom > window.innerHeight * 0.3;
+
+        if (visible) {
+
+            video.play();
+
+            if (audioUnlocked) {
+                video.muted = false;
+            }
+
+        } else {
+
+            video.pause();
+            video.muted = true;
+        }
+    });
+}
+
+window.addEventListener("scroll", () => {
+
+    const scrollY = window.scrollY;
+    const vh = window.innerHeight;
+
+    const index = Math.round(scrollY / vh);
+
+    /* ROTATION EFFECT */
+    decorations.forEach((el, i) => {
+
+        const direction = i % 2 === 0 ? 1 : -1;
+        const rotation = scrollY * 0.2 * direction;
+
+        el.style.transform = `rotate(${rotation}deg)`;
+    });
+
+    updateVideos();
+
+    // LOOP BACK TO TOP
+    if (index === lastIndex && !isLooping) {
+
+        isLooping = true;
+
+        setTimeout(() => {
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+            setTimeout(() => {
+                isLooping = false;
+            }, 1200);
+
+        }, 500);
+    }
+});
+
+/* INITIAL VIDEO CHECK */
+updateVideos();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>References + Credits</title>
+
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        background: black;
+        overflow-x: hidden;
+    }
+
+    body {
+        width: 100%;
+    }
+
+    .reference-image {
+        width: 100vw;
+        height: auto;
+        display: block;
+        margin: 0;
+        padding: 0;
+    }
+
+    #poppy {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+
+        width: 80px;
+        height: auto;
+
+        pointer-events: none;
+        z-index: 1000;
+
+        transform-origin: center;
+    }
+
+    .home-icon {
+        width: 100px;
+
+        position: fixed;
+        top: 30px;
+        left: 30px;
+
+        z-index: 20;
+
+        cursor: pointer;
+
+        transition: transform 0.2s ease;
+    }
+
+    .home-icon:hover {
+        transform: scale(1.15);
+    }
+</style>
+</head>
+
+<body>
+
+    <img src="referencesphoto1.png" class="reference-image">
+    <img src="referencesphoto2.png" class="reference-image">
+    <img src="referencesphoto3.png" class="reference-image">
+    <img src="referencesphoto4.png" class="reference-image">
+    <img src="referencesphoto5.png" class="reference-image">
+
+    <img id="poppy" src="referencespoppy.png">
+
+    <!-- HOME BUTTON -->
+    <a href="index.html">
+        <img class="home-icon" id="homeIcon" src="referenceshome.png" alt="Home">
+    </a>
+
+<script>
+const poppy = document.getElementById("poppy");
+
+window.addEventListener("scroll", () => {
+
+    const scrollY = window.scrollY;
+    const rotation = scrollY * 0.08;
+
+    poppy.style.transform = `rotate(${rotation}deg)`;
+
+});
+</script>
+
+</body>
+</html>

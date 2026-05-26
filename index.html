@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Women in War</title>
+
+<style>
+    body {
+        margin: 0;
+        background-color: #273939;
+        overflow-x: hidden;
+    }
+
+    img {
+        width: 100vw;
+        height: auto;
+        display: block;
+    }
+
+    /* EFFECT SECTIONS */
+    .effect-section {
+        position: relative;
+        height: 150vh;
+    }
+
+    .effect-inner {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .effect-inner img {
+        transition: transform 0.2s linear, opacity 0.2s linear;
+        transform-origin: center;
+    }
+
+    .credits {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    
+        font-size: 3vw;
+        color: #d5d8d8;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+
+        pointer-events: none;
+        text-align: center;
+        font-family: "Trebuchet MS", sans-serif;
+    }
+
+    #poppy {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+
+        width: 80px;
+        height: auto;
+    
+        pointer-events: none;
+        z-index: 1000;
+
+        transform-origin: center;
+    }
+
+    #poppy1 {
+        position: fixed;
+        top: 30px;
+        left: 30px;
+
+        width: 80px;
+        height: auto;
+    
+        pointer-events: none;
+        z-index: 1000;
+
+        transform-origin: center;
+    }
+
+    /* ========================= */
+    /* BOTTOM ICON BUTTONS */
+    /* ========================= */
+
+    .bottom-icons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 4vw;
+
+        margin-top: -400px; /* moves icons upward */
+        padding-bottom: 60px;
+
+        position: relative;
+        z-index: 10;
+
+        background-color: transparent;
+    }
+
+    .bottom-icons a img {
+        width: 120px;
+        max-width: 20vw;
+
+        transition: transform 0.25s ease, opacity 0.25s ease;
+        cursor: pointer;
+    }
+
+    .bottom-icons a img:hover {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+
+</style>
+</head>
+
+<body>
+
+<!-- SECTION 1 (effect) -->
+<div class="effect-section">
+    <div class="effect-inner">
+        <img id="img1" class="effect-img" src="homepagesection1.png">
+    </div>
+</div>
+
+<!-- SECTION 2 -->
+<img src="homepagesection2.png">
+
+<!-- SECTION 3 (effect) -->
+<div class="effect-section">
+    <div class="effect-inner">
+        <img id="img3" class="effect-img" src="homepagesection3.png">
+    </div>
+</div>
+
+<!-- SECTION 4 -->
+<img src="homepagesection4.png">
+
+<!-- SECTION 5 -->
+<div class="effect-section">
+    <div class="effect-inner">
+        <img id="img5" class="effect-img" src="homepagesection5.png">
+
+        <div id="text5" class="credits">
+            and she was there too
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 6 -->
+<div style="height: 20vh;"></div>
+<img src="homepagesection6.png">
+
+<!-- SECTION 7 (effect) -->
+<div class="effect-section">
+    <div class="effect-inner">
+        <img id="img7" class="effect-img" src="homepagesection7.png">
+
+        <!-- NEW TEXT OVERLAY -->
+        <div id="credits" class="credits">
+            By Rylynn and Emma
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 8 -->
+<img src="homepagesection8.png">
+
+<!-- BOTTOM ICON BUTTONS -->
+<div class="bottom-icons">
+
+    <a href="warstagram.html">
+        <img src="warstagram.png" alt="Warstagram">
+    </a>
+
+    <a href="winder.html">
+        <img src="winder.png" alt="Winder">
+    </a>
+
+    <a href="references.html">
+        <img src="references.png" alt="References">
+    </a>
+
+</div>
+
+<!-- POPPY -->
+<img id="poppy" src="homepagepoppy.png">
+<img id="poppy1" src="homepagepoppy1.png">
+
+<script>
+const images = document.querySelectorAll(".effect-img");
+const credits = document.getElementById("credits");
+const text5 = document.getElementById("text5");
+const poppy = document.getElementById("poppy");
+const poppy1 = document.getElementById("poppy1");
+
+window.addEventListener("scroll", () => {
+
+    // 🌺 POPPY ROTATION
+    const scrollY = window.scrollY;
+    const rotation = scrollY * 0.08;
+    poppy.style.transform = `rotate(${rotation}deg)`;
+    poppy1.style.transform = `rotate(${rotation}deg)`;
+
+    images.forEach(img => {
+
+        const rect = img.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+
+        let progress = 1 - (rect.top / windowHeight);
+        progress = Math.max(0, Math.min(progress, 1));
+
+        const start = 0.98;
+
+        let adjustedProgress;
+        if (progress < start) {
+            adjustedProgress = 0;
+        } else {
+            adjustedProgress = (progress - start) / (1 - start);
+        }
+
+        // =========================
+        // ⭐ SECTION 5 SPECIAL
+        // =========================
+        if (img.id === "img5") {
+
+            const scale = 1 + adjustedProgress * 1.2;
+
+            img.style.transform = `scale(${scale}) translateY(0px)`;
+            img.style.opacity = 1;
+
+            if (adjustedProgress > 0.7) {
+                text5.style.opacity = (adjustedProgress - 0.7) / 0.3;
+            } else {
+                text5.style.opacity = 0;
+            }
+
+            return;
+        }
+
+        // =========================
+        // NORMAL EFFECTS
+        // =========================
+
+        const scale = 1 + adjustedProgress * 0.5;
+        let translateY = adjustedProgress * -250;
+
+        if (img.id === "img1") {
+            translateY += 60;
+        }
+
+        if (img.id === "img3" || img.id === "img7") {
+            translateY -= 60;
+        }
+
+        // opacity rules
+        let opacity = 1;
+
+        if (img.id === "img7") {
+            opacity = 1;
+        } else {
+            if (adjustedProgress < 0.6) {
+                opacity = 1;
+            } else {
+                opacity = 1 - ((adjustedProgress - 0.6) / 0.4);
+            }
+        }
+
+        img.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+        img.style.opacity = opacity;
+
+        // =========================
+        // ⭐ SECTION 7 TEXT
+        // =========================
+        if (img.id === "img7") {
+            credits.style.opacity = adjustedProgress;
+        }
+    });
+});
+</script>
+
+</body>
+</html>
